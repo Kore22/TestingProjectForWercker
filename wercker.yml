@@ -1,56 +1,18 @@
-box: nodesource/node:trusty
-# Build definition
+box: node
+services:
+  
 build:
-  # The steps that will be executed on build
-    steps:
-        - script:
-            name: set up permissions
-            code: |
-                chmod 777 -R .
-                chmod 777 -R $WERCKER_CACHE_DIR
-        - script:
-            name: install npm@2
-            code: npm i -g npm
-
-        - npm-install
-
-        - script:
-            name: build
-            code: NODE_ENV=production npm run build
-
-        - script:
-            name: test
-            code: npm t
-
-        - script:
-            name: test links
-            code: npm run checkLinks
-
-    after-steps:
-        - kore-notifier:
-            url: https://bots.kore.com/hooks/104396dd8a824e1cc6b6e385f1ce5d86
-            channel: notifications
-            username: megatron
-            notify_on: "failed"
-
-deploy:
-    steps:
-        - s3sync:
-            source_dir: build/
-            delete-removed: true
-            bucket-url: $AWS_BUCKET_URL
-            key-id: $AWS_ACCESS_KEY_ID
-            key-secret: $AWS_SECRET_ACCESS_KEY
-
-        - script:
-            name: add redirect files
-            code: |
-                cd legacy-urls
-                npm install
-                node ./index.js
-    after-steps:
-        - kore-notifier:
-            url: https://bots.kore.com/hooks/104396dd8a824e1cc6b6e385f1ce5d86
-            channel: notifications
-            username: soundwave
-            notify_on: "failed"
+  steps:
+    - npm-install:
+        strict-ssl: false
+    
+    # A comment
+    -  npm-test
+    -  script:
+        name: some simple test!
+        code: |-
+          ech"line 1"
+          echo "line 2"
+  after-steps:
+      - mzp/http-notify:
+          url: https://bots.kore.com/hooks/104396dd8a824e1cc6b6e385f1ce5d86
