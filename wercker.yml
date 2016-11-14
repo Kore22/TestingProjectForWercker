@@ -7,6 +7,3 @@ build:
    after-steps:
       – mzp/http-notify:
         url: https://bots.kore.com/hooks/104396dd8a824e1cc6b6e385f1ce5d86
-          
-          
-
