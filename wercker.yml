@@ -15,4 +15,4 @@ build:
           echo "line 2"
   after-steps:
       - mzp/http-notify:
-          url: https://bots.kore.com/hooks/104396dd8a824e1cc6b6e385f1ce5d86
+          url: https://bots.kore.com/hooks/fe50f4d3449a11cb808820a3cc04ca7b
